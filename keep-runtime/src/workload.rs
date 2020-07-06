@@ -32,7 +32,9 @@ pub fn run<T: AsRef<[u8]>, U: AsRef<[u8]>, V: std::borrow::Borrow<(U, U)>>(
     args: impl IntoIterator<Item = T>,
     envs: impl IntoIterator<Item = V>,
 ) -> Result<Box<[wasmtime::Val]>> {
-    let engine = wasmtime::Engine::default();
+    let mut config = wasmtime::Config::new();
+    config.static_memory_maximum_size(1024 * 1024 * 8);
+    let engine = wasmtime::Engine::new(&config);
     let store = wasmtime::Store::new(&engine);
 
     // Instantiate WASI
