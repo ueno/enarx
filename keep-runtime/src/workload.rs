@@ -37,7 +37,7 @@ pub fn run<T: AsRef<[u8]>, U: AsRef<[u8]>, V: std::borrow::Borrow<(U, U)>>(
 
     // Instantiate WASI
     let mut builder = wasi_common::WasiCtxBuilder::new();
-    builder.args(args).envs(envs);
+    builder.args(args).envs(envs).inherit_stdio();
     let ctx = builder.build().or(Err(Error::RuntimeError))?;
     let wasi_snapshot_preview1 = wasmtime_wasi::Wasi::new(&store, ctx);
 
